@@ -45,10 +45,13 @@ public class UserController {
     @GetMapping("/myWishlist")
     public String getWishlist(Authentication authentication, Model model){
         List<Wishlist> wishlist = wishlistService.getWishlist(authentication);
-        List<Product> productList = new ArrayList<>();
+        List<String> productList = new ArrayList<>();
         for(Wishlist wl : wishlist){
-            productList.add(wl.getProduct());
+            productList.add(wl.getProduct().getName());
         }
+//        for(Product product : productList){
+//            System.out.println(product.getName());
+//        }
         model.addAttribute("msg",productList);
         return "myWishlist";
     }

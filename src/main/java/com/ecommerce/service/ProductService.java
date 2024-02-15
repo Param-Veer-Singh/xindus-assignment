@@ -19,6 +19,9 @@ public class ProductService {
     }
 
     public String deleteProduct(Integer id){
+        if (productRepository.findById(id).isPresent() == false){
+            return "Product not avaialable";
+        }
         productRepository.deleteById(id);
         return "Product deleted";
     }

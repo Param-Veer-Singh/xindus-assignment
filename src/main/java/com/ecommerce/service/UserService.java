@@ -43,7 +43,6 @@ public class UserService implements UserDetailsService {
     }
 
 
-
     public void addWishlist(Authentication authentication,String productname){
         Optional<Product> optionalProduct = productRepository.findByName(productname);
         Product product = optionalProduct.get();

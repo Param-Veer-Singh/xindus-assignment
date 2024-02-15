@@ -30,8 +30,9 @@ public class ProductController {
     }
 
     @GetMapping("/deleteProduct/{id}")
-    public String deleteProduct(@PathVariable Integer id){
-        productService.deleteProduct(id);
+    public String deleteProduct(@PathVariable Integer id, Model model){
+        String response = productService.deleteProduct(id);
+        model.addAttribute("msg", response);
         return "deleteProduct";
     }
 }
