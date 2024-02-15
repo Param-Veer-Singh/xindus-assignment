@@ -29,7 +29,7 @@ public class ProductController {
         return "saveProduct";
     }
 
-    @GetMapping("/deleteProduct")
+    @GetMapping("/deleteProduct/{id}")
     public String deleteProduct(@PathVariable Integer id){
         productService.deleteProduct(id);
         return "deleteProduct";

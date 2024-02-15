@@ -29,6 +29,8 @@ public class UserService implements UserDetailsService {
     private ProductRepository productRepository;
 
     @Autowired
+    private WishlistService wishlistService;
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     public String saveUser(User user){
 
@@ -40,11 +42,7 @@ public class UserService implements UserDetailsService {
         return "User has been added";
     }
 
-    public List<Product> getWishlist(Authentication authentication){
-        String username = authentication.getName();
-        System.out.println(authentication.getName());
-        return userRepository.findByUserName(username).get().getWishlist();
-    }
+
 
     public void addWishlist(Authentication authentication,String productname){
         Optional<Product> optionalProduct = productRepository.findByName(productname);
@@ -54,27 +52,7 @@ public class UserService implements UserDetailsService {
         User user = optionalUser.get();
 
         if(product != null){
-
-
-            List<Product> wl = new ArrayList<>(user.getWishlist());
-            wl.add(product);
-
-            user.setWishlist(wl);
-            userRepository.save(user);
-
-            System.out.println(user.getId());
-            System.out.println(user.getUserName());
-            System.out.println(user.getRole());
-            System.out.println(user.getPassword());
-
-            System.out.println(product.getId());
-            System.out.println(product.getUser().getUserName());
-            System.out.println(product.getName());
-            System.out.println(product.getType());
-            System.out.println(product.getPrice());
-
-            productRepository.save(product);
-
+            wishlistService.addWishlist(user,product);
         }
     }
 

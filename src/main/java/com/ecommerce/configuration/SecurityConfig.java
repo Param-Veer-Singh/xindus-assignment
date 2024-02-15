@@ -25,9 +25,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .requestMatchers("/home","/addUser","/saveUser","/swagger-ui/signUp.html").permitAll()
-                .requestMatchers("/welcome").authenticated()
-                .requestMatchers("/admin").hasAuthority("Admin")
+                .requestMatchers("/welcome","/addUser","/saveUser").permitAll()
+//                .requestMatchers("/welcome").authenticated()
+                .requestMatchers("/addProduct","/deleteProduct/**").hasAuthority("Admin")
                 .requestMatchers("/user").hasAuthority("User")
                 .anyRequest().authenticated()
 

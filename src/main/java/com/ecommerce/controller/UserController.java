@@ -2,13 +2,17 @@ package com.ecommerce.controller;
 
 import com.ecommerce.entity.Product;
 import com.ecommerce.entity.User;
+import com.ecommerce.entity.Wishlist;
+import com.ecommerce.repository.WishlistRepository;
 import com.ecommerce.service.UserService;
+import com.ecommerce.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -19,6 +23,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private WishlistService wishlistService;
     @GetMapping("/addUser")
     public String addUser(){
         return "signUp";
@@ -38,8 +44,12 @@ public class UserController {
 
     @GetMapping("/myWishlist")
     public String getWishlist(Authentication authentication, Model model){
-        List<Product> wishlist = userService.getWishlist(authentication);
-        model.addAttribute("msg",wishlist);
+        List<Wishlist> wishlist = wishlistService.getWishlist(authentication);
+        List<Product> productList = new ArrayList<>();
+        for(Wishlist wl : wishlist){
+            productList.add(wl.getProduct());
+        }
+        model.addAttribute("msg",productList);
         return "myWishlist";
     }
 
@@ -47,20 +57,6 @@ public class UserController {
     public String addWishlist(Authentication authentication ,@RequestParam String product){
         userService.addWishlist(authentication,product);
         return "addWishlist";
-    }
-    @GetMapping("/home")
-    public String getHomePage() {
-        return "homePage";
-    }
-
-    @GetMapping("/admin")
-    public String getAdminPage() {
-        return "adminPage";
-    }
-
-    @GetMapping("/user")
-    public String getEmployeePage() {
-        return "userPage";
     }
 
     @GetMapping("/accessDenied")
